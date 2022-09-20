@@ -8,7 +8,7 @@ use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
 use Yii;
 use yii\web\UploadedFile;
-use samuelelonghin\google\GoogleAuthTrait;
+use samuelelonghin\google\auth\GoogleAuthTrait;
 
 /**
  *
