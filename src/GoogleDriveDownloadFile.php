@@ -16,7 +16,7 @@ use samuelelonghin\google\auth\GoogleAuthTrait;
  */
 class GoogleDriveDownloadFile extends UploadedFile
 {
-    use GoogleDriveAuthTrait;
+    use GoogleAuthTrait;
     /**
      * @var DriveFile $_file
      */
