@@ -1,0 +1,29 @@
+{
+    "name": "samuelelonghin/yii2-googledrive",
+    "description": "Google Drive classes for upload and download files",
+    "type": "yii2-extension",
+    "keywords": [
+      "yii2",
+      "extension",
+      "google",
+      "googleapi",
+      "drive",
+      "googledrive"
+    ],
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Samuele Longhin",
+        "email": "longhin.samuele@outlook.com"
+      }
+    ],
+    "require": {
+      "yiisoft/yii2": "~2.0.0",
+      "google/apiclient": "^2.12.1"
+    },
+    "autoload": {
+      "psr-4": {
+        "samuelelonghin\\grid\\": "src/"
+      }
+    }
+  }
