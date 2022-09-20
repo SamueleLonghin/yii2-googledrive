@@ -24,7 +24,7 @@
     },
     "autoload": {
       "psr-4": {
-        "samuelelonghin\\grid\\": "src/"
+        "samuelelonghin\\google\\drive\\": "src/"
       }
     }
   }
