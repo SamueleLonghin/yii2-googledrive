@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\support\drive;
+namespace samuelelonghin\google\drive;
 
 use Google\Client;
 use Google\Exception;
