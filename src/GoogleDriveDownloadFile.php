@@ -3,41 +3,26 @@
 namespace samuelelonghin\google\drive;
 
 use Google\Client;
-use Google\Exception;
-use Google\Service\Drive;
-use Google\Service\Drive\DriveFile;
+use Google\Service;
+use GuzzleHttp\Exception\GuzzleException;
 use Yii;
-use yii\web\UploadedFile;
-use samuelelonghin\google\auth\GoogleAuthTrait;
 
 /**
  *
  * @property-read Client $client
+ * @property-read Service\Drive $service
  */
-class GoogleDriveDownloadFile extends UploadedFile
+class GoogleDriveDownloadFile extends GoogleDriveBase
 {
-    use GoogleAuthTrait;
+    public ?string $filePath = null;
+
     /**
-     * @var DriveFile $_file
+     * @throws GuzzleException
      */
-    public DriveFile $_file;
-    protected Client $_client;
-    public $result;
-    public $filePath = null;
-
-
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-        $this->_file = new DriveFile();
-    }
-
     public static function getInstanceById($id, $options = []): ?GoogleDriveDownloadFile
     {
         $model = (new self());
-        if (!($service = new Drive($model->client))) {
-            return null;
-        }
+        if (!$model->service) return null;
 
         /**
          * Get file Instance
@@ -47,11 +32,11 @@ class GoogleDriveDownloadFile extends UploadedFile
         $http = $model->client->authorize();
 
         // Download in 1 MB chunks
-        $chunkSizeBytes = 1 * 1024 * 1024;
+        $chunkSizeBytes = 1024 * 1024;
         $chunkStart = 0;
 
 
-        $file = $service->files->get($id, [
+        $file = $model->service->files->get($id, [
             'fields' => 'size,fileExtension,name'
         ]);
         if ($file) {
@@ -88,27 +73,5 @@ class GoogleDriveDownloadFile extends UploadedFile
     public function removeLocal(): bool
     {
         return unlink($this->filePath);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getClient(): ?Client
-    {
-        $this->_client = new Client();
-
-        if ($credentials_file = $this->checkServiceAccountCredentialsFile()) {
-            // set the location manually
-            $this->_client->setAuthConfig($credentials_file);
-        } elseif (getenv('GOOGLE_APPLICATION_CREDENTIALS')) {
-            // use the application default credentials
-            $this->_client->useApplicationDefaultCredentials();
-        } else {
-            echo $this->missingServiceAccountDetailsWarning();
-            return null;
-        }
-
-        $this->_client->addScope("https://www.googleapis.com/auth/drive");
-        return $this->_client;
     }
 }
